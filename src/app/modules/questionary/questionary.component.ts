@@ -1,35 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+
+import { Questions } from '../../models/questions-interface';
 
 @Component({
   selector: 'app-questionary',
   templateUrl: './questionary.component.html',
   styleUrls: ['./questionary.component.css']
 })
-export class QuestionaryComponent implements OnInit {
-  isLinear: true;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+export class QuestionaryComponent {
+  
+  containerQuestions: NodeListOf<any>;
+  questions: Questions[] = [];
+  idRestaurant: number;
+  titleRestaurtant: string;
+  indexQuestion: number = 0;
+  textButton: string = 'Siguiente'
 
-  constructor(
-    private Api: ApiService,
-    private _formBuilder: FormBuilder
-  ) { }
-
-  ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-
+  constructor( private Api: ApiService ) { 
     this.Api.getQuestions('1').subscribe(
       res => {
-        console.log(res)
+        this.titleRestaurtant = res['restaurant_name'];
+        this.idRestaurant = res['id_restaurant'];
+        this.questions = res['questions'];
       },
       err => {
-        console.log(err);
+        console.error(err);
       }
     );
   }
 
+  nextQuestion() {
+    this.containerQuestions = document.querySelectorAll('.ask');
+    this.containerQuestions.forEach((element)=> {
+      if(element.classList.contains('is-active')) {
+        element.classList.remove('is-active');
+        this.indexQuestion++;
+      }
+    });
+
+    if(this.indexQuestion < this.containerQuestions.length) {
+      const missing = this.questions.length - this.indexQuestion;
+      if(missing === 1) {
+        this.textButton = 'Enviar';
+      }
+      this.containerQuestions[this.indexQuestion].classList.add('is-active');
+    }
+
+  }
 }
+
