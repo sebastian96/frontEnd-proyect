@@ -25,7 +25,7 @@ export class QuestionaryComponent {
         this.questions = res['questions'];
       },
       err => {
-        console.error(err);
+        console.error(err); 
       }
     );
   }
