@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 
 import { Questions } from '../../models/questions-interface';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-questionary',
@@ -15,7 +16,9 @@ export class QuestionaryComponent {
   idRestaurant: number;
   titleRestaurtant: string;
   indexQuestion: number = 0;
-  textButton: string = 'Siguiente'
+  textButton: string = 'Siguiente';
+
+  form: FormGroup;
 
   constructor( private Api: ApiService ) { 
     this.Api.getQuestions('1').subscribe(
@@ -31,7 +34,7 @@ export class QuestionaryComponent {
   }
 
   nextQuestion() {
-    this.containerQuestions = document.querySelectorAll('.ask');
+    this.containerQuestions = document.querySelectorAll('.js-ask');
     this.containerQuestions.forEach((element)=> {
       if(element.classList.contains('is-active')) {
         element.classList.remove('is-active');
@@ -46,7 +49,6 @@ export class QuestionaryComponent {
       }
       this.containerQuestions[this.indexQuestion].classList.add('is-active');
     }
-
   }
 }
 

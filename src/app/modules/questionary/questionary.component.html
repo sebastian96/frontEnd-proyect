@@ -3,44 +3,32 @@
     <div class="container-questions">
         <h2 class="text-primary">{{titleRestaurtant | uppercase }}</h2>
         <div class="container questions col s12">
-            <div *ngFor="let ask of questions; first as primero">
-                <div class="ask" [ngClass]="{'is-active': primero}">
-                    <p class="text-primary">{{ask.question}}</p>
-                    <div class="divider"></div>
-                    <form class="form" action="#">
-                        <p>
-                            <label>
-                                <input name="group1" type="radio"/>
-                                <span>Muy Satisfecho</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input name="group1" type="radio"/>
-                                <span>Satisfecho</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input name="group1" type="radio"/>
-                                <span>Regular</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input name="group1" type="radio"/>
-                                <span>Malo</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input name="group1" type="radio"/>
-                                <span>Pesimo</span>
-                            </label>
-                        </p>
-                    </form>
+            <form class="form" [formGroup]="form">
+                <div *ngFor="let ask of questions; first as primero">
+                    <div class="ask js-ask" [ngClass]="{'is-active': primero}">
+                        <p class="text-primary">{{ask.question}}</p>
+                        <div class="divider"></div>
+                        <div *ngFor="let option of ask['options']">
+                            <div *ngIf="ask['id_type_question'] !== 4; then radios; else textArea"></div>
+                            <ng-template #radios>
+                                <p>
+                                    <label>
+                                        <input name="group1" type="radio"/>
+                                        <span>{{option}}</span>
+                                    </label>
+                                </p>
+                            </ng-template>
+
+                            <ng-template #textArea>
+                                <div class="input-field col s12">
+                                    <textarea id="text" class="materialize-textarea"></textarea>
+                                    <label for="text">Danos tu opinion</label>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="col s12">
             <button class="btn light-blue darken-4" (click)="nextQuestion()">{{textButton}}</button>
