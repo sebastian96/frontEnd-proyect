@@ -1,0 +1,27 @@
+.blue-grey {
+    width: 100%;
+    height: 100%;
+}
+
+.container-questions {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.container-questions .ask {
+    display: none;
+}
+
+.container-questions .ask.is-active {
+    display: block;
+}
+
+.form {
+    margin-top: 40px;
+}
